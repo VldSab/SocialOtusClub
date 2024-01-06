@@ -1,2 +1,2 @@
-insert into public.user
-values (1, 'name', 'surname', 18, 'male', 'no', 'Istambul');
+insert into public.role
+values (1, 'user'), (2, 'admin');
