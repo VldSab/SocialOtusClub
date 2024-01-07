@@ -2,6 +2,7 @@ package ru.saberullin.socialotusclub.user.repository;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import ru.saberullin.socialotusclub.role.model.Role;
 import ru.saberullin.socialotusclub.role.repository.RoleRepository;
@@ -33,7 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Boolean existsByName(String name) {
         String existsByNameSql = "SELECT COUNT(1) FROM public.user WHERE name = ?";
-        Integer count = jdbcTemplate.queryForObject(existsByNameSql, Integer.class);
+        Integer count = jdbcTemplate.queryForObject(existsByNameSql, Integer.class, name);
         return count != null && count > 0;
     }
 
@@ -41,7 +42,6 @@ public class UserRepositoryImpl implements UserRepository {
     public List<Role> findRolesByUserName(String name) {
         Optional<UserEntity> user = findByName(name);
         if (user.isEmpty()) {
-            //TODO
             return List.of();
         }
         long userId = user.get().getId();
@@ -50,4 +50,23 @@ public class UserRepositoryImpl implements UserRepository {
         List<Role> roles =  roleRepository.findAll();
         return roles.stream().filter(role -> roleIds.contains(role.getId())).toList();
      }
+
+    @Override
+    public UserEntity saveUser(UserEntity user) {
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withSchemaName("public")
+                .withTableName("user")
+                .usingGeneratedKeyColumns("id");
+        Long id = simpleJdbcInsert.executeAndReturnKey(user.toMap()).longValue();
+
+        String findByIdSql = "SELECT * FROM public.user WHERE id = ?";
+        return jdbcTemplate.queryForObject(findByIdSql, new UserEntityRowMapper(), id);
+
+    }
+
+    @Override
+    public void saveUserRole(UserEntity user, Role role) {
+        String saveUserRoleSql = "INSERT INTO public.user_role VALUES (?, ?)";
+        jdbcTemplate.update(saveUserRoleSql, user.getId(), role.getId());
+    }
 }

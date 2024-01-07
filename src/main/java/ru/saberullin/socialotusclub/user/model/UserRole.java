@@ -1,6 +1,7 @@
 package ru.saberullin.socialotusclub.user.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -8,11 +9,11 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 public class UserRole {
-    @NonNull
+    @NotNull
     @JsonProperty("user_id")
     private Long userId;
 
-    @NonNull
+    @NotNull
     @JsonProperty("role_id")
     private Long roleId;
 }
