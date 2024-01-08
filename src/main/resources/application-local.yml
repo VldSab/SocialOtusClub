@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    postgres:
+      url: jdbc:postgresql://localhost:5432/postgres
+      name: postgres
+      password: password
+      driver-class-name: org.postgresql.Driver
+      username: postgres
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: none
