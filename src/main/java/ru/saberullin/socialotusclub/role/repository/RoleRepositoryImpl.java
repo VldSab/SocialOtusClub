@@ -26,7 +26,13 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     @Override
     public List<Role> findAll() {
-        return jdbcTemplate.queryForList("SELECT * FROM public.role", Role.class);
+        return jdbcTemplate.queryForList("SELECT * FROM public.role")
+                .stream().map(
+                        it -> Role.builder()
+                                .id((Long)it.get("id"))
+                                .role((String)it.get("role"))
+                                .build())
+                .toList();
     }
 
 }

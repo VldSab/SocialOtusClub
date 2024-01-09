@@ -1,6 +1,7 @@
 package ru.saberullin.socialotusclub.user.repository;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -28,7 +29,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<UserEntity> findByName(String name) {
         String findByNameSql = "SELECT * FROM public.user WHERE name = ?";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(findByNameSql, new UserEntityRowMapper(), name));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(findByNameSql, new UserEntityRowMapper(), name));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

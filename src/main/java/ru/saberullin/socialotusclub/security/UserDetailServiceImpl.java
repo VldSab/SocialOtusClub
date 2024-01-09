@@ -5,9 +5,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.saberullin.socialotusclub.role.model.Role;
+import ru.saberullin.socialotusclub.user.UserNotFoundException;
 import ru.saberullin.socialotusclub.user.model.UserEntity;
 import ru.saberullin.socialotusclub.user.repository.UserRepository;
 
@@ -24,9 +24,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
         UserEntity user = userRepository.findByName(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User name not found"));
+                .orElseThrow(() -> new UserNotFoundException("Username %s not found".formatted(username)));
         List<Role> userRoles = userRepository.findRolesByUserName(username);
         return new User(user.getName(), user.getPassword(), rolesToAuthorities(userRoles));
     }

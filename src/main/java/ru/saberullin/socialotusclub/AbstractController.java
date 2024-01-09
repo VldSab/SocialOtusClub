@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.saberullin.socialotusclub.security.AuthenticationException;
+import ru.saberullin.socialotusclub.user.UserNotFoundException;
 
 import java.util.Map;
 
@@ -30,6 +31,15 @@ public class AbstractController {
     public Map<String, String> handleAuthenticationException(final AuthenticationException e) {
         return Map.of(
                 "error", "Authentication error",
+                "message", e.getMessage()
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleNotFoundException(final UserNotFoundException e) {
+        return Map.of(
+                "error", "User not found",
                 "message", e.getMessage()
         );
     }
