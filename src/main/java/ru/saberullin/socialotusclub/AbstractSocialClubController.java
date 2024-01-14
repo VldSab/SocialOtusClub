@@ -11,10 +11,14 @@ import ru.saberullin.socialotusclub.user.UserNotFoundException;
 import java.util.Map;
 
 @RestController
-public class AbstractController {
+public class AbstractSocialClubController {
 
     public ResponseEntity<?> createResponse(HttpStatus status, String message) {
         return ResponseEntity.status(status).body(message);
+    }
+
+    public ResponseEntity<?> createResponse(HttpStatus status, Object responseEntity) {
+        return ResponseEntity.status(status).body(responseEntity);
     }
 
     @ExceptionHandler

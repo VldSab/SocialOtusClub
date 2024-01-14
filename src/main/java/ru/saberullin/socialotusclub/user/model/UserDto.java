@@ -1,10 +1,11 @@
 package ru.saberullin.socialotusclub.user.model;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
+@Builder
 public class UserDto {
     private Long id;
     @NotNull

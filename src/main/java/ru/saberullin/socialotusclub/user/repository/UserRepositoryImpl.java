@@ -37,9 +37,26 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<UserEntity> findById(Long id) {
+        String findByIdSql = "SELECT * FROM public.user WHERE id = ?";
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(findByIdSql, new UserEntityRowMapper(), id));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Boolean existsByName(String name) {
         String existsByNameSql = "SELECT COUNT(1) FROM public.user WHERE name = ?";
         Integer count = jdbcTemplate.queryForObject(existsByNameSql, Integer.class, name);
+        return count != null && count > 0;
+    }
+
+    @Override
+    public Boolean existsById(Long id) {
+        String existsByIdSql = "SELECT COUNT(1) FROM public.user WHERE id = ?";
+        Integer count = jdbcTemplate.queryForObject(existsByIdSql, Integer.class, id);
         return count != null && count > 0;
     }
 

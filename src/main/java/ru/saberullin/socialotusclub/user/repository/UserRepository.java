@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface UserRepository {
     Optional<UserEntity> findByName(String name);
+    Optional<UserEntity> findById(Long id);
     Boolean existsByName(String name);
+    Boolean existsById(Long id);
     List<Role> findRolesByUserName(String name);
     UserEntity saveUser(UserEntity user);
     void saveUserRole(UserEntity user, Role role);
