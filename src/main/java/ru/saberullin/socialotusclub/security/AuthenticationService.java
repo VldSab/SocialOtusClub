@@ -35,13 +35,13 @@ public class AuthenticationService {
     }
 
     public void register(UserRegisterDto registerDto) {
-        String username = registerDto.getName();
+        String username = registerDto.getUsername();
 
-        if (userRepository.existsByName(username)) {
+        if (userRepository.existsByUsername(username)) {
             throw new AuthenticationException("Username %s already exists".formatted(username));
         }
         UserEntity user = UserEntity.builder()
-                .name(username)
+                .username(username)
                 .password(passwordEncoder.encode(registerDto.getPassword()))
                 .build();
 
@@ -58,7 +58,7 @@ public class AuthenticationService {
 
     public void login(UserLoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getName(), loginDto.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

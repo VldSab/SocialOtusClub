@@ -27,12 +27,22 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<UserEntity> findByName(String name) {
-        String findByNameSql = "SELECT * FROM public.user WHERE name = ?";
+    public Optional<UserEntity> findByUsername(String username) {
+        String findByNameSql = "SELECT * FROM public.user WHERE username = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(findByNameSql, new UserEntityRowMapper(), name));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(findByNameSql, new UserEntityRowMapper(), username));
         } catch (DataAccessException e) {
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<UserEntity> findByNameAndSurname(String firstName, String secondName) {
+        String findByNameSql = "SELECT * FROM public.user WHERE name LIKE ? AND surname LIKE ?";
+        try {
+            return jdbcTemplate.query(findByNameSql, new UserEntityRowMapper(), firstName, secondName);
+        } catch (DataAccessException e) {
+            return List.of();
         }
     }
 
@@ -47,7 +57,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Boolean existsByName(String name) {
+    public Boolean existsByUsername(String name) {
         String existsByNameSql = "SELECT COUNT(1) FROM public.user WHERE name = ?";
         Integer count = jdbcTemplate.queryForObject(existsByNameSql, Integer.class, name);
         return count != null && count > 0;
@@ -61,8 +71,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Role> findRolesByUserName(String name) {
-        Optional<UserEntity> user = findByName(name);
+    public List<Role> findRolesByUserName(String username) {
+        Optional<UserEntity> user = findByUsername(username);
         if (user.isEmpty()) {
             return List.of();
         }

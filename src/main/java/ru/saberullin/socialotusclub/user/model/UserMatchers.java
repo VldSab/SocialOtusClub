@@ -7,6 +7,7 @@ public class UserMatchers {
     public static UserDto userEntityToUserDto(UserEntity userEntity) {
         return UserDto.builder()
                 .id(userEntity.getId())
+                .username(userEntity.getUsername())
                 .name(userEntity.getName())
                 .surname(userEntity.getSurname())
                 .age(userEntity.getAge())

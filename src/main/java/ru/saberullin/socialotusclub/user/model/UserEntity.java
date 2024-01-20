@@ -13,6 +13,7 @@ import java.util.Map;
 public class UserEntity {
     private Long id;
     @NotNull
+    private String username;
     private String name;
     private String surname;
     private Integer age;
@@ -24,6 +25,7 @@ public class UserEntity {
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
+        map.put("username", username);
         map.put("name", name);
         map.put("surname", surname);
         map.put("age", age);

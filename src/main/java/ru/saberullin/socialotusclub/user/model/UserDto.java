@@ -9,6 +9,7 @@ import lombok.Data;
 public class UserDto {
     private Long id;
     @NotNull
+    private String username;
     private String name;
     private String surname;
     private Integer age;

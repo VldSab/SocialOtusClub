@@ -16,7 +16,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"name1\",\n    \"password\": \"password1\"\n}",
+					"raw": "{\n    \"username\": \"name1\",\n    \"password\": \"password1\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -49,7 +49,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"name1\",\n    \"password\": \"password1\"\n}",
+					"raw": "{\n    \"username\": \"name1\",\n    \"password\": \"password1\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -74,9 +74,50 @@
 		},
 		{
 			"name": "getUserById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "name1",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password1",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/user/get/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"get",
+						"1"
+					]
+				}
 			},
 			"response": []
 		}

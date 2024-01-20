@@ -21,4 +21,9 @@ public class UserSocialClubController extends AbstractSocialClubController {
     public ResponseEntity<?> getUser(@PathVariable Long id) {
         return createResponse(OK, userService.findUserById(id));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> getUsers(@RequestParam String firstName, @RequestParam String lastName) {
+        return createResponse(OK, userService.findUsersByNameAndSurname(firstName, lastName));
+    }
 }
