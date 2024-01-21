@@ -26,4 +26,10 @@ public class UserSocialClubController extends AbstractSocialClubController {
     public ResponseEntity<?> getUsers(@RequestParam String firstName, @RequestParam String lastName) {
         return createResponse(OK, userService.findUsersByNameAndSurname(firstName, lastName));
     }
+
+    @GetMapping("/fill-synthetic/{amount}")
+    public ResponseEntity<?> fillWithSyntheticUsers(@PathVariable Integer amount) {
+        userService.fillSynthetic(amount);
+        return createResponse(OK, "Synthetic generated");
+    }
 }

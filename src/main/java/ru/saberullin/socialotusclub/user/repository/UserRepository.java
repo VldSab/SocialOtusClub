@@ -1,6 +1,7 @@
 package ru.saberullin.socialotusclub.user.repository;
 
 import ru.saberullin.socialotusclub.role.model.Role;
+import ru.saberullin.socialotusclub.user.model.UserDto;
 import ru.saberullin.socialotusclub.user.model.UserEntity;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface UserRepository {
     List<Role> findRolesByUserName(String name);
     UserEntity saveUser(UserEntity user);
     void saveUserRole(UserEntity user, Role role);
+    UserEntity updateUser(UserDto userDto);
 }

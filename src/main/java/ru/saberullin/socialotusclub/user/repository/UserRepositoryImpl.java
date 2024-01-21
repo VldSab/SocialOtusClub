@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import ru.saberullin.socialotusclub.role.model.Role;
 import ru.saberullin.socialotusclub.role.repository.RoleRepository;
+import ru.saberullin.socialotusclub.user.model.UserDto;
 import ru.saberullin.socialotusclub.user.model.UserEntity;
 import ru.saberullin.socialotusclub.user.model.UserEntityRowMapper;
 
@@ -101,4 +102,21 @@ public class UserRepositoryImpl implements UserRepository {
         String saveUserRoleSql = "INSERT INTO public.user_role VALUES (?, ?)";
         jdbcTemplate.update(saveUserRoleSql, user.getId(), role.getId());
     }
+
+    @Override
+    public UserEntity updateUser(UserDto userDto) {
+        String sqlUpdate = "UPDATE public.user SET username = ?, name = ?, surname = ?, age = ?, sex = ?, interests = ?, city = ? WHERE id = ?";
+        jdbcTemplate.update(sqlUpdate,
+                userDto.getUsername(),
+                userDto.getName(),
+                userDto.getSurname(),
+                userDto.getAge(),
+                userDto.getSex(),
+                userDto.getInterests(),
+                userDto.getCity(),
+                userDto.getId());
+        return findByUsername(userDto.getUsername()).get();
+    }
+
+
 }

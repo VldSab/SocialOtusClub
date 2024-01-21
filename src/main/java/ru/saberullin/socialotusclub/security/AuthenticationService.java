@@ -34,7 +34,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public void register(UserRegisterDto registerDto) {
+    public Long register(UserRegisterDto registerDto) {
         String username = registerDto.getUsername();
 
         if (userRepository.existsByUsername(username)) {
@@ -54,6 +54,7 @@ public class AuthenticationService {
 
         UserEntity savedUser = userRepository.saveUser(user);
         userRepository.saveUserRole(savedUser, role.get());
+        return savedUser.getId();
     }
 
     public void login(UserLoginDto loginDto) {
