@@ -15,6 +15,7 @@ public interface UserRepository {
     Boolean existsById(Long id);
     List<Role> findRolesByUserName(String name);
     UserEntity saveUser(UserEntity user);
+    void saveAllUsers(List<UserEntity> users);
     void saveUserRole(UserEntity user, Role role);
     UserEntity updateUser(UserDto userDto);
 }

@@ -20,6 +20,12 @@ public class SyntheticNamesLoader implements Iterator<String[]>{
         namesIterator = file.lines().iterator();
     }
 
+    @SneakyThrows
+    public void resetIterator() {
+        BufferedReader file = new BufferedReader(new InputStreamReader(new FileInputStream(PATH)));
+        namesIterator = file.lines().iterator();
+    }
+
     @Override
     public boolean hasNext() {
         return namesIterator.hasNext();

@@ -1,16 +1,16 @@
 package ru.saberullin.socialotusclub.user.service;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import ru.saberullin.socialotusclub.security.AuthenticationService;
-import ru.saberullin.socialotusclub.user.UserAlreadyExistsException;
 import ru.saberullin.socialotusclub.user.UserNotFoundException;
 import ru.saberullin.socialotusclub.user.model.UserDto;
 import ru.saberullin.socialotusclub.user.model.UserEntity;
 import ru.saberullin.socialotusclub.user.model.UserMatchers;
-import ru.saberullin.socialotusclub.user.model.UserRegisterDto;
 import ru.saberullin.socialotusclub.user.repository.UserRepository;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,22 +50,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void fillSynthetic(Integer amount) {
-        int count = 0;
-        while (syntheticNamesLoader.hasNext() && count < amount) {
-            count++;
+        List<UserEntity> users = new ArrayList<>();
+        while (syntheticNamesLoader.hasNext() && users.size() < amount) {
             String[] nameSurname = syntheticNamesLoader.next();
             String username = String.join("", nameSurname) + Instant.now();
-            UserEntity savedUser = userRepository.saveUser(UserEntity.builder()
-                    .username(username)
-                    .password("password")
-                    .build());
-            updateUser(UserDto.builder()
-                    .id(savedUser.getId())
+            UserEntity savedUser = UserEntity.builder()
                     .username(username)
                     .name(nameSurname[0])
                     .surname(nameSurname[1])
-                    .build());
+                    .build();
+            users.add(savedUser);
         }
+        userRepository.saveAllUsers(users);
+        syntheticNamesLoader.resetIterator();
     }
 
     @Override
@@ -88,4 +85,5 @@ public class UserServiceImpl implements UserService {
 
         return userEntityToUserDto(userRepository.updateUser(updatedUser));
     }
+
 }

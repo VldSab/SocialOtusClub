@@ -11,6 +11,7 @@ import ru.saberullin.socialotusclub.user.model.UserDto;
 import ru.saberullin.socialotusclub.user.model.UserEntity;
 import ru.saberullin.socialotusclub.user.model.UserEntityRowMapper;
 
+import java.sql.PreparedStatement;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<UserEntity> findByNameAndSurname(String firstName, String secondName) {
         String findByNameSql = "SELECT * FROM public.user WHERE name LIKE ? AND surname LIKE ?";
         try {
-            return jdbcTemplate.query(findByNameSql, new UserEntityRowMapper(), firstName, secondName);
+            return jdbcTemplate.query(findByNameSql, new UserEntityRowMapper(), firstName + "%", secondName + "%");
         } catch (DataAccessException e) {
             return List.of();
         }
@@ -94,7 +95,17 @@ public class UserRepositoryImpl implements UserRepository {
 
         String findByIdSql = "SELECT * FROM public.user WHERE id = ?";
         return jdbcTemplate.queryForObject(findByIdSql, new UserEntityRowMapper(), id);
+    }
 
+    @Override
+    public void saveAllUsers(List<UserEntity> users) {
+        String saveBatchSql = "INSERT INTO public.user (username, name, surname) VALUES (?, ?, ?)";
+        jdbcTemplate.batchUpdate(saveBatchSql, users, 100,
+                (PreparedStatement ps, UserEntity user) -> {
+                    ps.setString(1, user.getUsername());
+                    ps.setString(2, user.getName());
+                    ps.setString(3, user.getSurname());
+                });
     }
 
     @Override
