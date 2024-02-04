@@ -120,6 +120,22 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "fillSynthetic",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "findUsersByNameAndSurnamePattern",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	]
 }
