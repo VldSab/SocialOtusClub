@@ -72,6 +72,14 @@ services:
     depends_on:
       - postgres_primary
 
+  cache:
+    image: redis
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+
 volumes:
   postgres_db:
     driver: local

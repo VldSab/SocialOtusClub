@@ -1,6 +1,8 @@
 package ru.saberullin.socialotusclub.user.service;
 
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 import ru.saberullin.socialotusclub.post.Post;
 import ru.saberullin.socialotusclub.post.PostRepository;
 import ru.saberullin.socialotusclub.security.AuthenticationService;
@@ -12,6 +14,7 @@ import ru.saberullin.socialotusclub.user.repository.UserRepository;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +27,14 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationService authenticationService;
     private final SyntheticNamesLoader syntheticNamesLoader;
     private final PostRepository postRepository;
+    private final JedisPool jedisPool;
 
-    public UserServiceImpl(UserRepository userRepository, AuthenticationService authenticationService, SyntheticNamesLoader syntheticNamesLoader, PostRepository postRepository) {
+    public UserServiceImpl(UserRepository userRepository, AuthenticationService authenticationService, SyntheticNamesLoader syntheticNamesLoader, PostRepository postRepository, JedisPool jedisPool) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.syntheticNamesLoader = syntheticNamesLoader;
         this.postRepository = postRepository;
+        this.jedisPool = jedisPool;
     }
 
     @Override
@@ -103,7 +108,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Post createPost(Post post) {
-        return postRepository.savePost(post);
+        Post createdPost = postRepository.savePost(post);
+        Jedis jedis = jedisPool.getResource();
+        jedis.lpush(post.getOwnerId().toString(), createdPost.toJSON());
+        return createdPost;
     }
 
 }

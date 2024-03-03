@@ -10,7 +10,7 @@ public class PostMapper implements RowMapper<Post> {
     public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
         return Post.builder()
                 .id(rs.getLong("id"))
-                .owner_id(rs.getLong("owner_id"))
+                .ownerId(rs.getLong("owner_id"))
                 .payload(rs.getString("payload"))
                 .build();
     }
