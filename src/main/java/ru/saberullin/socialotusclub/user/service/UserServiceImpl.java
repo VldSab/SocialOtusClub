@@ -1,7 +1,8 @@
 package ru.saberullin.socialotusclub.user.service;
 
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import ru.saberullin.socialotusclub.post.Post;
+import ru.saberullin.socialotusclub.post.PostRepository;
 import ru.saberullin.socialotusclub.security.AuthenticationService;
 import ru.saberullin.socialotusclub.user.UserNotFoundException;
 import ru.saberullin.socialotusclub.user.model.UserDto;
@@ -22,11 +23,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AuthenticationService authenticationService;
     private final SyntheticNamesLoader syntheticNamesLoader;
+    private final PostRepository postRepository;
 
-    public UserServiceImpl(UserRepository userRepository, AuthenticationService authenticationService, SyntheticNamesLoader syntheticNamesLoader) {
+    public UserServiceImpl(UserRepository userRepository, AuthenticationService authenticationService, SyntheticNamesLoader syntheticNamesLoader, PostRepository postRepository) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.syntheticNamesLoader = syntheticNamesLoader;
+        this.postRepository = postRepository;
     }
 
     @Override
@@ -84,6 +87,23 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         return userEntityToUserDto(userRepository.updateUser(updatedUser));
+    }
+
+    @Override
+    public void addFriend(Long userId, Long friendId) {
+        String notFoundMessage = "User with id %s not found";
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException(notFoundMessage.formatted(userId));
+        }
+        if (!userRepository.existsById(friendId)) {
+            throw new UserNotFoundException(notFoundMessage.formatted(friendId));
+        }
+        userRepository.makeFriendship(userId, friendId);
+    }
+
+    @Override
+    public Post createPost(Post post) {
+        return postRepository.savePost(post);
     }
 
 }

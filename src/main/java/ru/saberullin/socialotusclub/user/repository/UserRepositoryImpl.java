@@ -129,5 +129,11 @@ public class UserRepositoryImpl implements UserRepository {
         return findByUsername(userDto.getUsername()).get();
     }
 
+    @Override
+    public void makeFriendship(Long userId, Long friendId) {
+        String sqlSaveFriends = "INSERT INTO public.user_friend (user_id, friend_id) VALUES (?, ?), (?, ?)";
+        jdbcTemplate.update(sqlSaveFriends, userId, friendId, friendId, userId);
+    }
+
 
 }

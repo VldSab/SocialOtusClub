@@ -10,7 +10,7 @@ public class UserEntityRowMapper implements RowMapper<UserEntity> {
     public UserEntity mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         return UserEntity.builder()
                 .id(resultSet.getLong("id"))
-                .username("username")
+                .username(resultSet.getString("username"))
                 .name(resultSet.getString("name"))
                 .surname(resultSet.getString("surname"))
                 .age(resultSet.getInt("age"))
