@@ -135,5 +135,10 @@ public class UserRepositoryImpl implements UserRepository {
         jdbcTemplate.update(sqlSaveFriends, userId, friendId, friendId, userId);
     }
 
+    @Override
+    public List<Long> getUserFriendsIds(Long userId) {
+        String sqlGetUserFriendsId = "SELECT friend_id FROM public.user_friend WHERE user_id = ?";
+        return jdbcTemplate.queryForList(sqlGetUserFriendsId, Long.class, userId);
+    }
 
 }

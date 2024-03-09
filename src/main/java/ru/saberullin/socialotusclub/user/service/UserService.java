@@ -12,4 +12,5 @@ public interface UserService {
     UserDto updateUser(UserDto userDto);
     void addFriend(Long userId, Long friendId);
     Post createPost(Post post);
+    List<Post> getUserFeed(Long userId);
 }

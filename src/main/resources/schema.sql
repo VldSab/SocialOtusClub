@@ -39,4 +39,8 @@ create table if not exists public.post (
     owner_id bigint,
     payload varchar,
     constraint owner_fk foreign key (owner_id) references public.user (id)
-)
+);
+
+create index user_name_surname_idx on public."user" using btree (name varchar_pattern_ops, surname varchar_pattern_ops);
+
+create index user_friend_user_id_idx on public.user_friend using btree (user_id);

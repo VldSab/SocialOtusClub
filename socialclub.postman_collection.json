@@ -158,31 +158,198 @@
 			"name": "fillSynthetic",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/user/fill-synthetic/500000",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"fill-synthetic",
+						"500000"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "findUsersByNameAndSurnamePattern",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "name1",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password1",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/search?firstName=Абр&lastName=Т",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"search"
+					],
+					"query": [
+						{
+							"key": "firstName",
+							"value": "Абр"
+						},
+						{
+							"key": "lastName",
+							"value": "Т"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "addFriend",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "name1",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password1",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/user/friend/add?userId=1&friendId=2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"friend",
+						"add"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "1"
+						},
+						{
+							"key": "friendId",
+							"value": "2"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "createPost",
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "name1",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password1",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
-				"header": []
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ownerId\": 2,\n    \"payload\": \"This is my second post\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/user/post/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"post",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUserFeed",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "name1",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/user/1/feed",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1",
+						"feed"
+					]
+				}
 			},
 			"response": []
 		}

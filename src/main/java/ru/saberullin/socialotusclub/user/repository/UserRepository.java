@@ -19,4 +19,5 @@ public interface UserRepository {
     void saveUserRole(UserEntity user, Role role);
     UserEntity updateUser(UserDto userDto);
     void makeFriendship(Long userId, Long friendId);
+    List<Long> getUserFriendsIds(Long userId);
 }

@@ -42,8 +42,13 @@ public class UserSocialClubController extends AbstractSocialClubController {
     }
 
     @PostMapping("/post/create")
-    public ResponseEntity<Post> createPost(@RequestBody @Valid Post post) {
+    public ResponseEntity<?> createPost(@RequestBody @Valid Post post) {
         Post savedPost = userService.createPost(post);
-        return (ResponseEntity<Post>) createResponse(OK, savedPost);
+        return createResponse(OK, savedPost);
+    }
+
+    @GetMapping("/{id}/feed")
+    public ResponseEntity<?> getUserFeed(@PathVariable Long id) {
+        return createResponse(OK, userService.getUserFeed(id));
     }
 }
