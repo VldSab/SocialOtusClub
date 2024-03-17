@@ -9,13 +9,13 @@ spring:
       password: password
       driver-class-name: org.postgresql.Driver
       username: postgres
-  sql:
-    init:
-      mode: always
-  jpa:
-    hibernate:
-      ddl-auto: none
   data:
     redis:
       host: redis
       port: 6379
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      bootstrap-servers: kafka:9092
+    producer:
+      bootstrap-servers: kafka:9092

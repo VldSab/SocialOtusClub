@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Post createPost(Post post) {
         Post saved = postRepository.savePost(post);
-        feed.addPostToFeed(saved);
+        feed.pushPostToKafkaQueueFeed(saved);
         return saved;
     }
 
